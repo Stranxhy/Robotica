@@ -25,50 +25,38 @@ export default function Navbar() {
   return (
     <header
       style={{ backgroundColor: "#cc0000" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
-        scrolled ? "shadow-lg" : ""
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "shadow-xl py-1" : "py-2"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        {/* Logo */}
+        {/* Logo Section */}
         <a href="#inicio" className="flex items-center gap-3 group">
-          <div
-            className="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
-          >
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="2" y="6" width="20" height="12" rx="2" />
-              <path d="M6 6V4M10 6V4M14 6V4M18 6V4" />
-              <path d="M6 18v2M10 18v2M14 18v2M18 18v2" />
-              <circle cx="8" cy="12" r="1.5" fill="white" stroke="none" />
-              <circle cx="12" cy="12" r="1.5" fill="white" stroke="none" />
-              <circle cx="16" cy="12" r="1.5" fill="white" stroke="none" />
-            </svg>
+          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+            <img 
+              src="/img/logo_blanco.png" 
+              alt="Logo Club de Robótica"
+              className="w-full h-full object-contain"
+            />
           </div>
-          <div>
-            <p className="text-white font-bold text-base leading-tight">
+          <div className="flex flex-col">
+            <p className="text-white font-bold text-sm md:text-base leading-tight uppercase tracking-tight">
               Club de Robótica
             </p>
-            <p className="text-red-200 text-xs leading-tight">
+            <p className="text-red-100 text-[10px] md:text-xs leading-tight opacity-90">
               Universidad Iberoamericana
             </p>
           </div>
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="nav-link text-sm">
+              <a 
+                href={link.href} 
+                className="text-white/80 hover:text-white text-[13px] font-medium uppercase tracking-wider transition-colors"
+              >
                 {link.label}
               </a>
             </li>
@@ -76,26 +64,28 @@ export default function Navbar() {
         </ul>
 
         {/* CTA desktop */}
-        <a
-          href="#contacto"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white border-2 border-white/60 hover:bg-white hover:text-red-700 transition-all duration-200"
-        >
-          Únete al Club
-        </a>
+        <div className="hidden md:flex items-center">
+          <a
+            href="#contacto"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-red-700 bg-white hover:bg-red-50 transition-all duration-200 shadow-lg"
+          >
+            Únete al Club
+          </a>
+        </div>
 
         {/* Hamburger */}
         <button
-          className="md:hidden text-white p-2 rounded-md"
+          className="lg:hidden text-white p-2 rounded-md transition-colors hover:bg-white/10"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Abrir menú"
         >
           {menuOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -108,24 +98,24 @@ export default function Navbar() {
       {menuOpen && (
         <div
           style={{ backgroundColor: "#b30000" }}
-          className="md:hidden px-6 pb-4"
+          className="lg:hidden px-6 pb-8 border-t border-white/10"
         >
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-4 mt-4">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="block text-white/90 hover:text-white font-medium py-1 text-sm"
+                  className="block text-white/90 hover:text-white font-semibold py-2 text-sm uppercase tracking-widest"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
                 </a>
               </li>
             ))}
-            <li>
+            <li className="pt-2">
               <a
                 href="#contacto"
-                className="inline-block mt-1 px-4 py-2 rounded-full text-sm font-semibold text-white border-2 border-white/60"
+                className="inline-block w-full text-center px-4 py-3 rounded-md text-sm font-bold uppercase tracking-widest bg-white text-red-700 shadow-xl"
                 onClick={() => setMenuOpen(false)}
               >
                 Únete al Club

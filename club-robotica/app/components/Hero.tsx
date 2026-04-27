@@ -32,7 +32,7 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
-  // Typing animation — cursor desaparece al terminar
+  // Animación de escritura
   useEffect(() => {
     const fullText = "Innovando el Futuro";
     let i = 0;
@@ -53,7 +53,7 @@ export default function Hero() {
     return () => clearTimeout(delay);
   }, []);
 
-  // Terminal animation
+  // Animación de la terminal
   useEffect(() => {
     let lineIndex = 0;
     const addLine = () => {
@@ -67,7 +67,7 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
-  // Mouse parallax
+  // Parallax del Mouse
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -93,7 +93,7 @@ export default function Hero() {
       id="inicio"
       className="hero-bg relative flex flex-col items-center justify-center min-h-screen text-center px-6 overflow-hidden"
     >
-      {/* Mouse-following spotlight */}
+      {/* Spotlight que sigue al ratón */}
       <div
         className="absolute inset-0 pointer-events-none z-10"
         style={{
@@ -101,7 +101,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Animated grid overlay */}
+      {/* Grid de fondo con movimiento suave */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -113,7 +113,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Floating particles */}
+      {/* Partículas */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {PARTICLES.map((p) => (
           <div
@@ -132,7 +132,7 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Parallax decorative blobs */}
+      {/* Decoración Parallax (Blobs e Iconos) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute rounded-full"
@@ -158,7 +158,6 @@ export default function Hero() {
             transition: "transform 0.15s ease",
           }}
         />
-        {/* Circuit board icon top-right */}
         <svg
           className="absolute"
           style={{
@@ -182,27 +181,9 @@ export default function Hero() {
           <circle cx="12" cy="12" r="1.5" />
           <circle cx="16" cy="12" r="1.5" />
         </svg>
-        {/* Gear icon bottom-left */}
-        <svg
-          className="absolute hero-spin-slow"
-          style={{
-            bottom: "14%",
-            left: "5%",
-            opacity: 0.08,
-          }}
-          width="110"
-          height="110"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="white"
-          strokeWidth="0.6"
-        >
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-        </svg>
       </div>
 
-      {/* Main content with parallax */}
+      {/* Contenido principal con Parallax */}
       <div
         className="relative z-20 flex flex-col items-center"
         style={{
@@ -211,32 +192,38 @@ export default function Hero() {
           transition: "opacity 1s ease, transform 0.15s ease",
         }}
       >
-        <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-5">
-          Club de Robótica · Ibero
-        </p>
+        {/* EL NUEVO BADGE PREMIUM */}
+        <div
+          className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-6 border shadow-inner"
+          style={{
+            background: "rgba(204,0,0,0.12)",
+            borderColor: "rgba(255,255,255,0.08)",
+          }}
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full hero-blink"
+            style={{ backgroundColor: "#cc0000" }}
+          />
+          <p className="text-white text-[11px] font-bold tracking-[0.25em] uppercase opacity-90">
+            Club de Robótica<span className="text-white/40 mx-2">|</span>Ibero
+          </p>
+        </div>
 
         <h1
           className="text-5xl md:text-8xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg select-none"
           style={{ minHeight: "1.2em" }}
         >
           {typedText}
-          {/* Cursor sólo visible mientras se está escribiendo */}
           {!typingDone && (
             <span style={{ color: "#cc0000" }}>|</span>
           )}
         </h1>
 
-        <p
-          className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed"
-          style={{
-            transform: `translate(${dx * -5}px, ${dy * -5}px)`,
-            transition: "transform 0.2s ease",
-          }}
-        >
+        <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
           Diseña, construye y programa robots que cambiarán el mundo
         </p>
 
-        {/* Terminal widget */}
+        {/* Terminal con Parallax */}
         <div
           className="text-left rounded-xl overflow-hidden shadow-2xl w-full max-w-xs"
           style={{

@@ -27,35 +27,24 @@ export default function Footer() {
       {/* Main footer */}
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-4 gap-10">
-          {/* Brand */}
+          {/* Brand Section */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: "#cc0000" }}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.8"
-                >
-                  <rect x="2" y="6" width="20" height="12" rx="2" />
-                  <path d="M6 6V4M10 6V4M14 6V4M18 6V4" />
-                  <path d="M6 18v2M10 18v2M14 18v2M18 18v2" />
-                  <circle cx="8" cy="12" r="1.5" fill="white" stroke="none" />
-                  <circle cx="12" cy="12" r="1.5" fill="white" stroke="none" />
-                  <circle cx="16" cy="12" r="1.5" fill="white" stroke="none" />
-                </svg>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex-shrink-0">
+                <img 
+                  src="/img/logo_blanco.png" 
+                  alt="Logo Club de Robótica IBERO"
+                  className="w-14 h-14 object-contain" 
+                />
               </div>
               <div>
-                <p className="font-bold text-sm leading-tight">Club de Robótica</p>
+                <p className="font-bold text-base leading-tight uppercase tracking-wider text-white">
+                  Club de<br />Robótica
+                </p>
                 <p className="text-gray-400 text-xs leading-tight">Univ. Iberoamericana</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-5">
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Diseñando el futuro tecnológico desde la Universidad Iberoamericana, Ciudad de México.
             </p>
             {/* Social icons */}
@@ -99,7 +88,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
-              <h4 className="font-bold text-sm mb-4 text-white">{section}</h4>
+              <h4 className="font-bold text-sm mb-4 text-white uppercase tracking-wider">{section}</h4>
               <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
