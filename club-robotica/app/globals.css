@@ -108,3 +108,45 @@ body {
   background: var(--ibero-red);
   border-radius: 2px;
 }
+
+/* Hero particle float-up animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.4);
+    opacity: 0;
+  }
+}
+
+.hero-particle {
+  animation: floatUp linear infinite;
+}
+
+/* Slow-spin for decorative gear icon */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hero-spin-slow {
+  animation: spinSlow 28s linear infinite;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.hero-blink {
+  animation: blink 0.9s step-start infinite;
+}

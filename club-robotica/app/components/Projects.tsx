@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 const projects = [
   {
     title: "Robot Seguidor de Línea",
@@ -51,12 +53,22 @@ const projects = [
   },
 ];
 
+const ALL_CATEGORIES = ["Todos", ...Array.from(new Set(projects.map((p) => p.category)))];
+
 export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState("Todos");
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  const filtered =
+    activeFilter === "Todos"
+      ? projects
+      : projects.filter((p) => p.category === activeFilter);
+
   return (
     <section id="proyectos" className="py-24 px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <p
             className="text-xs font-bold tracking-widest uppercase mb-3"
             style={{ color: "#cc0000" }}
@@ -65,23 +77,60 @@ export default function Projects() {
           </p>
           <h2 className="section-title mb-4">Proyectos Destacados</h2>
           <p className="section-subtitle">
-            Desde robots autónomos hasta dispositivos biomédicos — exploramos
-            el límite de lo posible.
+            Desde robots autónomos hasta dispositivos biomédicos — exploramos el
+            límite de lo posible.
           </p>
+        </div>
+
+        {/* Filter tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {ALL_CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className="px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200"
+              style={{
+                backgroundColor:
+                  activeFilter === cat ? "#cc0000" : "transparent",
+                color: activeFilter === cat ? "white" : "#555",
+                border: `2px solid ${activeFilter === cat ? "#cc0000" : "#ddd"}`,
+                transform: activeFilter === cat ? "scale(1.05)" : "scale(1)",
+              }}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-          {projects.map((p) => (
+          {filtered.map((p, i) => (
             <article
               key={p.title}
-              className="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100"
+              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer"
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{
+                transform:
+                  hoveredIdx === i
+                    ? "translateY(-6px)"
+                    : "translateY(0)",
+                boxShadow:
+                  hoveredIdx === i
+                    ? "0 16px 48px rgba(0,0,0,0.14)"
+                    : "0 1px 4px rgba(0,0,0,0.06)",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              }}
             >
               <div className="h-44 overflow-hidden relative">
                 <img
                   src={p.img}
                   alt={p.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  className="w-full h-full object-cover"
+                  style={{
+                    transform: hoveredIdx === i ? "scale(1.07)" : "scale(1)",
+                    transition: "transform 0.5s ease",
+                  }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
                       "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80";
@@ -93,6 +142,19 @@ export default function Projects() {
                 >
                   {p.tag}
                 </span>
+                {/* Overlay on hover */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background: "rgba(204,0,0,0.7)",
+                    opacity: hoveredIdx === i ? 1 : 0,
+                    transition: "opacity 0.3s ease",
+                  }}
+                >
+                  <span className="text-white font-bold text-sm tracking-wider uppercase">
+                    Ver Proyecto
+                  </span>
+                </div>
               </div>
               <div className="p-5">
                 <p
@@ -126,7 +188,14 @@ export default function Projects() {
             }}
           >
             Ver todos los proyectos
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </a>
