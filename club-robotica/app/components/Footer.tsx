@@ -15,7 +15,7 @@ const footerLinks = {
   ],
   Comunidad: [
     { label: "Instagram", href: "#" },
-    { label: "YouTube", href: "#" },
+    { label: "YouTube", href: "https://www.youtube.com/@JADAROBOTICS" },
     { label: "GitHub", href: "#" },
     { label: "LinkedIn", href: "#" },
   ],
@@ -49,10 +49,16 @@ export default function Footer() {
             </p>
             {/* Social icons */}
             <div className="flex gap-3">
-              {["instagram", "youtube", "github"].map((social) => (
+              {[
+                { id: "instagram", href: "#" },
+                { id: "youtube", href: "https://www.youtube.com/@JADAROBOTICS" },
+                { id: "github", href: "#" },
+              ].map(({ id: social, href }) => (
                 <a
                   key={social}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
                   style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
                   onMouseEnter={(e) => {
@@ -111,18 +117,8 @@ export default function Footer() {
         className="border-t px-6 py-5"
         style={{ borderColor: "rgba(255,255,255,0.08)" }}
       >
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <div className="max-w-6xl mx-auto flex items-center justify-center text-xs text-gray-500">
           <p>© {new Date().getFullYear()} Club de Robótica — Universidad Iberoamericana. Todos los derechos reservados.</p>
-          <div
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ backgroundColor: "rgba(204,0,0,0.15)" }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ backgroundColor: "#cc0000" }}
-            />
-            <span style={{ color: "#ff6666" }}>Reuniones: miércoles 17:00 h</span>
-          </div>
         </div>
       </div>
     </footer>

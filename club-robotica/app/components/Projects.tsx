@@ -69,12 +69,7 @@ export default function Projects() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <p
-            className="text-xs font-bold tracking-widest uppercase mb-3"
-            style={{ color: "#cc0000" }}
-          >
-            Nuestro trabajo
-          </p>
+          <p className="section-label">Nuestro trabajo</p>
           <h2 className="section-title mb-4">Proyectos Destacados</h2>
           <p className="section-subtitle">
             Desde robots autónomos hasta dispositivos biomédicos — exploramos el

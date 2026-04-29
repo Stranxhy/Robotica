@@ -2,72 +2,43 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const PARTICLES = Array.from({ length: 28 }, (_, i) => ({
-  id: i,
-  x: (i * 3.7 + 2) % 100,
-  size: (i % 3) + 2,
-  duration: 12 + (i % 8),
-  delay: -(i * 0.55),
-}));
-
-const CODE_LINES = [
-  { text: "$ robot.initialize()", color: "text-green-400" },
-  { text: "  Calibrating servos... OK", color: "text-white/50" },
-  { text: "  Connecting sensors... OK", color: "text-white/50" },
-  { text: "  Loading AI model... OK", color: "text-white/50" },
-  { text: "$ robot.start()", color: "text-green-400" },
-  { text: "  > SISTEMA LISTO ✓", color: "text-red-400 font-bold" },
+const CAROUSEL_IMAGES = [
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80",
+  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+  "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=1920&q=80",
+  "https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?w=1920&q=80",
 ];
 
+const CAROUSEL_INTERVAL = 5000;
+
+const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
+  id: i,
+  x: (i * 5.1 + 3) % 100,
+  size: (i % 3) + 2,
+  duration: 14 + (i % 7),
+  delay: -(i * 0.7),
+}));
+
+
 export default function Hero() {
+  const [slide, setSlide] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
-  const [typedText, setTypedText] = useState("");
-  const [typingDone, setTypingDone] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [terminalLines, setTerminalLines] = useState<number>(-1);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setIsLoaded(true), 80);
+    const t = setInterval(
+      () => setSlide((s) => (s + 1) % CAROUSEL_IMAGES.length),
+      CAROUSEL_INTERVAL
+    );
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  // Animación de escritura
-  useEffect(() => {
-    const fullText = "Innovando el Futuro";
-    let i = 0;
-    setTypedText("");
-    setTypingDone(false);
-    const delay = setTimeout(() => {
-      const timer = setInterval(() => {
-        if (i < fullText.length) {
-          setTypedText(fullText.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(timer);
-          setTypingDone(true);
-        }
-      }, 85);
-      return () => clearInterval(timer);
-    }, 500);
-    return () => clearTimeout(delay);
-  }, []);
-
-  // Animación de la terminal
-  useEffect(() => {
-    let lineIndex = 0;
-    const addLine = () => {
-      setTerminalLines(lineIndex);
-      lineIndex++;
-      if (lineIndex < CODE_LINES.length) {
-        setTimeout(addLine, 550);
-      }
-    };
-    const t = setTimeout(addLine, 1600);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Parallax del Mouse
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -91,29 +62,54 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="inicio"
-      className="hero-bg relative flex flex-col items-center justify-center min-h-screen text-center px-6 overflow-hidden"
+      className="relative flex items-center min-h-screen overflow-hidden"
     >
-      {/* Spotlight que sigue al ratón */}
-      <div
-        className="absolute inset-0 pointer-events-none z-10"
-        style={{
-          background: `radial-gradient(ellipse 700px 500px at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(204,0,0,0.2) 0%, transparent 65%)`,
-        }}
-      />
+      {/* ── Carousel background ── */}
+      <div className="absolute inset-0">
+        {CAROUSEL_IMAGES.map((src, i) => (
+          <div
+            key={src}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("${src}")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: i === slide ? 1 : 0,
+              transition: "opacity 1.6s ease-in-out",
+            }}
+          />
+        ))}
+        {/* Gradient: heavier on left for text readability */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(105deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.38) 100%)",
+          }}
+        />
+      </div>
 
-      {/* Grid de fondo con movimiento suave */}
+      {/* ── Grid ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          transform: `translate(${dx * 12}px, ${dy * 12}px)`,
-          transition: "transform 0.12s ease",
+            "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+          transform: `translate(${dx * 10}px, ${dy * 10}px)`,
+          transition: "transform 0.14s ease",
         }}
       />
 
-      {/* Partículas */}
+      {/* ── Mouse spotlight ── */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10"
+        style={{
+          background: `radial-gradient(ellipse 600px 450px at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(204,0,0,0.15) 0%, transparent 65%)`,
+        }}
+      />
+
+      {/* ── Particles ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {PARTICLES.map((p) => (
           <div
@@ -124,7 +120,7 @@ export default function Hero() {
               bottom: "-8px",
               width: `${p.size}px`,
               height: `${p.size}px`,
-              background: "rgba(255,255,255,0.22)",
+              background: "rgba(255,255,255,0.18)",
               animationDuration: `${p.duration}s`,
               animationDelay: `${p.delay}s`,
             }}
@@ -132,131 +128,93 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Decoración Parallax (Blobs e Iconos) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute rounded-full"
-          style={{
-            top: "-100px",
-            left: "-100px",
-            width: "400px",
-            height: "400px",
-            background: "radial-gradient(circle, rgba(204,0,0,0.22) 0%, transparent 70%)",
-            transform: `translate(${dx * 32}px, ${dy * 22}px)`,
-            transition: "transform 0.15s ease",
-          }}
-        />
-        <div
-          className="absolute rounded-full"
-          style={{
-            bottom: "-120px",
-            right: "-100px",
-            width: "500px",
-            height: "500px",
-            background: "radial-gradient(circle, rgba(204,0,0,0.18) 0%, transparent 70%)",
-            transform: `translate(${dx * -28}px, ${dy * -18}px)`,
-            transition: "transform 0.15s ease",
-          }}
-        />
-        <svg
-          className="absolute"
-          style={{
-            top: "10%",
-            right: "7%",
-            opacity: 0.1,
-            transform: `translate(${dx * -22}px, ${dy * 16}px)`,
-            transition: "transform 0.2s ease",
-          }}
-          width="140"
-          height="140"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="white"
-          strokeWidth="0.6"
-        >
-          <rect x="2" y="6" width="20" height="12" rx="2" />
-          <path d="M6 6V4M10 6V4M14 6V4M18 6V4" />
-          <path d="M6 18v2M10 18v2M14 18v2M18 18v2" />
-          <circle cx="8" cy="12" r="1.5" />
-          <circle cx="12" cy="12" r="1.5" />
-          <circle cx="16" cy="12" r="1.5" />
-        </svg>
+      {/* ── Carousel dots ── */}
+      <div className="absolute bottom-8 left-16 flex gap-2 z-30">
+        {CAROUSEL_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setSlide(i)}
+            style={{
+              width: i === slide ? "28px" : "8px",
+              height: "4px",
+              borderRadius: "9999px",
+              background: i === slide ? "#cc0000" : "rgba(255,255,255,0.3)",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              transition: "width 0.4s ease, background 0.3s ease",
+            }}
+          />
+        ))}
       </div>
 
-      {/* Contenido principal con Parallax */}
+      {/* ── Prev / Next ── */}
+      <button
+        onClick={() => setSlide((s) => (s - 1 + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length)}
+        className="absolute left-4 bottom-16 z-30 flex items-center justify-center rounded-full"
+        style={{
+          width: "36px", height: "36px",
+          background: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(255,255,255,0.15)",
+          cursor: "pointer",
+          transition: "background 0.2s ease",
+        }}
+        onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(204,0,0,0.7)")}
+        onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)")}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        onClick={() => setSlide((s) => (s + 1) % CAROUSEL_IMAGES.length)}
+        className="absolute left-12 bottom-16 z-30 flex items-center justify-center rounded-full"
+        style={{
+          width: "36px", height: "36px",
+          background: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(255,255,255,0.15)",
+          cursor: "pointer",
+          transition: "background 0.2s ease",
+        }}
+        onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(204,0,0,0.7)")}
+        onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)")}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+
+      {/* ── Main content ── */}
       <div
-        className="relative z-20 flex flex-col items-center"
+        className="relative z-20 w-full max-w-6xl mx-auto px-8 md:px-16 flex items-center"
         style={{
           opacity: isLoaded ? 1 : 0,
-          transform: `translate(${dx * -10}px, ${dy * -10}px)`,
-          transition: "opacity 1s ease, transform 0.15s ease",
+          transform: `translate(${dx * -8}px, ${dy * -8}px)`,
+          transition: "opacity 0.9s ease, transform 0.15s ease",
         }}
       >
-        {/* EL NUEVO BADGE PREMIUM */}
-        <div
-          className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-6 border shadow-inner"
-          style={{
-            background: "rgba(204,0,0,0.12)",
-            borderColor: "rgba(255,255,255,0.08)",
-          }}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full hero-blink"
-            style={{ backgroundColor: "#cc0000" }}
-          />
-          <p className="text-white text-[11px] font-bold tracking-[0.25em] uppercase opacity-90">
-            Club de Robótica<span className="text-white/40 mx-2">|</span>Ibero
-          </p>
-        </div>
-
         <h1
-          className="text-5xl md:text-8xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg select-none"
-          style={{ minHeight: "1.2em" }}
-        >
-          {typedText}
-          {!typingDone && (
-            <span style={{ color: "#cc0000" }}>|</span>
-          )}
-        </h1>
-
-        <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
-          Diseña, construye y programa robots que cambiarán el mundo
-        </p>
-
-        {/* Terminal con Parallax */}
-        <div
-          className="text-left rounded-xl overflow-hidden shadow-2xl w-full max-w-xs"
+          className="select-none"
           style={{
-            background: "rgba(0,0,0,0.72)",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            transform: `translate(${dx * -6}px, ${dy * -6}px)`,
-            transition: "transform 0.2s ease",
+            fontWeight: 900,
+            color: "#fff",
+            lineHeight: 0.92,
+            letterSpacing: "-0.045em",
+            textAlign: "left",
           }}
         >
-          <div
-            className="flex items-center gap-2 px-4 py-2.5"
-            style={{
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(255,255,255,0.04)",
-            }}
-          >
-            <span className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
-            <span className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
-            <span className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
-            <span className="text-white/35 text-xs ml-2 font-mono">robot.sh</span>
-          </div>
-          <div className="px-4 py-3 font-mono text-xs min-h-[112px]">
-            {CODE_LINES.slice(0, terminalLines + 1).map((line, i) => (
-              <div key={i} className={line.color}>
-                {line.text}
-              </div>
-            ))}
-            {terminalLines >= 0 && terminalLines < CODE_LINES.length - 1 && (
-              <span className="text-green-400 hero-blink">█</span>
-            )}
-          </div>
-        </div>
+          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}>
+            Diseña.
+          </span>
+          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}>
+            Construye.
+          </span>
+          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", color: "#cc0000", textShadow: "0 2px 40px rgba(204,0,0,0.4)" }}>
+            Innova.
+          </span>
+        </h1>
       </div>
     </section>
   );

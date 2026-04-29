@@ -29,21 +29,21 @@ export default function Navbar() {
         scrolled ? "shadow-xl py-1" : "py-2"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
         {/* Logo Section */}
-        <a href="#inicio" className="flex items-center gap-3 group">
-          <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-            <img 
-              src="/img/logo_blanco.png" 
+        <a href="#inicio" className="flex items-center gap-4 group">
+          <div className="w-16 h-16 flex items-center justify-center flex-shrink-0">
+            <img
+              src="/img/logo_blanco.png"
               alt="Logo Club de Robótica"
               className="w-full h-full object-contain"
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-white font-bold text-sm md:text-base leading-tight uppercase tracking-tight">
+            <p className="text-white font-bold text-lg md:text-xl leading-tight uppercase tracking-tight">
               Club de Robótica
             </p>
-            <p className="text-red-100 text-[10px] md:text-xs leading-tight opacity-90">
+            <p className="text-red-100 text-xs md:text-sm leading-tight opacity-90">
               Universidad Iberoamericana
             </p>
           </div>
