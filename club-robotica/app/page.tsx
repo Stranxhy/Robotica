@@ -16,8 +16,8 @@ export default function Home() {
       <main>
         <Hero />
         <Stats />
-        <Vision />
         <About />
+        <Vision />
         <Projects />
         <Videos />
         <Events />

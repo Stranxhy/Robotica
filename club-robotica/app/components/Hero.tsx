@@ -24,6 +24,7 @@ export default function Hero() {
   const [slide, setSlide] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [isLoaded, setIsLoaded] = useState(false);
+  const [lines, setLines] = useState(["", "", ""]);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -38,6 +39,36 @@ export default function Hero() {
     const t = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    const words = ["Diseña.", "Construye.", "Innova."];
+    let wordIdx = 0;
+    let charIdx = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const type = () => {
+      if (wordIdx >= words.length) return;
+      charIdx++;
+      const wi = wordIdx;
+      const ci = charIdx;
+      setLines((prev) => {
+        const next = [...prev];
+        next[wi] = words[wi].slice(0, ci);
+        return next;
+      });
+      if (charIdx < words[wordIdx].length) {
+        timer = setTimeout(type, 75);
+      } else {
+        wordIdx++;
+        charIdx = 0;
+        if (wordIdx < words.length) timer = setTimeout(type, 220);
+      }
+    };
+
+    timer = setTimeout(type, 400);
+    return () => clearTimeout(timer);
+  }, [isLoaded]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!heroRef.current) return;
@@ -205,15 +236,27 @@ export default function Hero() {
             textAlign: "left",
           }}
         >
-          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}>
-            Diseña.
-          </span>
-          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}>
-            Construye.
-          </span>
-          <span style={{ display: "block", fontSize: "clamp(3rem, 8.5vw, 7.5rem)", color: "#cc0000", textShadow: "0 2px 40px rgba(204,0,0,0.4)" }}>
-            Innova.
-          </span>
+          {[
+            { color: "#fff", shadow: "0 2px 40px rgba(0,0,0,0.5)" },
+            { color: "#fff", shadow: "0 2px 40px rgba(0,0,0,0.5)" },
+            { color: "#cc0000", shadow: "0 2px 40px rgba(204,0,0,0.4)" },
+          ].map((word, i) => (
+            <span
+              key={i}
+              style={{
+                display: "block",
+                fontSize: "clamp(3rem, 8.5vw, 7.5rem)",
+                color: word.color,
+                textShadow: word.shadow,
+                minHeight: "1em",
+              }}
+            >
+              {lines[i]}
+              {lines[i].length > 0 && lines[i].length < ["Diseña.", "Construye.", "Innova."][i].length && (
+                <span style={{ opacity: 1, animation: "blink 0.7s step-start infinite" }}>|</span>
+              )}
+            </span>
+          ))}
         </h1>
       </div>
     </section>

@@ -26,7 +26,7 @@ const VIDEOS = [
   },
 ];
 
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -42,7 +42,8 @@ function useInView(threshold = 0.15) {
 
 export default function Videos() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [featured, setFeatured] = useState(0);
   const { ref, visible } = useInView();
 
   useEffect(() => {
@@ -53,147 +54,220 @@ export default function Videos() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const mainVideo = VIDEOS[featured];
+  const sideVideos = VIDEOS.filter((_, i) => i !== featured);
+
   return (
     <>
-      <section
-        id="videos"
-        className="py-24 px-6 bg-white"
-      >
+      <section id="videos" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
 
-          {/* Cards */}
+          {/* Header */}
+          <div className="mb-12">
+            <p className="section-label">Contenido</p>
+            <h2 className="section-title">Robótica en Acción</h2>
+          </div>
+
+          {/* Layout: featured + sidebar */}
           <div
             ref={ref}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="grid md:grid-cols-3 gap-5"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(32px)",
+              transition: "opacity 0.6s ease, transform 0.6s ease",
+            }}
           >
-            {VIDEOS.map((video, i) => (
-              <button
-                key={video.id}
-                onClick={() => setActiveVideo(video.id)}
-                onMouseEnter={() => setHoveredCard(i)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className="relative rounded-2xl overflow-hidden text-left cursor-pointer group"
-                style={{
-                  aspectRatio: "16/9",
-                  opacity: visible ? 1 : 0,
-                  transform: visible
-                    ? "translateY(0) scale(1)"
-                    : "translateY(40px) scale(0.97)",
-                  transition: `opacity 0.55s ease ${i * 0.12}s, transform 0.55s ease ${i * 0.12}s, box-shadow 0.3s ease`,
-                  boxShadow:
-                    hoveredCard === i
-                      ? "0 28px 70px rgba(204,0,0,0.45), 0 0 0 2px rgba(204,0,0,0.65)"
-                      : "0 4px 24px rgba(0,0,0,0.5)",
+            {/* Featured card */}
+            <button
+              className="md:col-span-2 relative rounded-2xl overflow-hidden text-left cursor-pointer"
+              style={{
+                aspectRatio: "16/9",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
+                transition: "box-shadow 0.3s ease, transform 0.3s ease",
+              }}
+              onClick={() => setActiveVideo(mainVideo.id)}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.015)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 20px 60px rgba(204,0,0,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 40px rgba(0,0,0,0.18)";
+              }}
+            >
+              <img
+                src={`https://img.youtube.com/vi/${mainVideo.id}/maxresdefault.jpg`}
+                alt={mainVideo.title}
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${mainVideo.id}/hqdefault.jpg`;
                 }}
-              >
-                {/* Thumbnail */}
-                <img
-                  src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
-                  alt={video.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{
-                    transform: hoveredCard === i ? "scale(1.07)" : "scale(1)",
-                    transition: "transform 0.5s ease",
-                  }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-                  }}
-                />
+              />
+              {/* Gradient */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)",
+                }}
+              />
+              {/* Red top accent */}
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: "#cc0000" }} />
 
-                {/* Gradient overlay */}
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center">
                 <div
-                  className="absolute inset-0"
+                  className="w-20 h-20 rounded-full flex items-center justify-center"
                   style={{
-                    background:
-                      hoveredCard === i
-                        ? "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)"
-                        : "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0.1) 100%)",
-                    transition: "background 0.3s ease",
-                  }}
-                />
-
-                {/* Play button */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center"
-                    style={{
-                      background:
-                        hoveredCard === i ? "#cc0000" : "rgba(255,255,255,0.12)",
-                      transform: hoveredCard === i ? "scale(1.2)" : "scale(1)",
-                      transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-                      backdropFilter: "blur(8px)",
-                      border:
-                        hoveredCard === i
-                          ? "none"
-                          : "2px solid rgba(255,255,255,0.25)",
-                    }}
-                  >
-                    <svg
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      fill="white"
-                      style={{ marginLeft: "3px" }}
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Duration badge */}
-                <div
-                  className="absolute top-3 right-3 px-2 py-0.5 rounded text-xs font-bold"
-                  style={{
-                    background: "rgba(0,0,0,0.7)",
-                    color: "white",
+                    background: "rgba(204,0,0,0.9)",
+                    boxShadow: "0 0 0 8px rgba(204,0,0,0.2)",
                     backdropFilter: "blur(4px)",
                   }}
                 >
-                  {video.duration}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style={{ marginLeft: "4px" }}>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </div>
+              </div>
 
-                {/* Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span
-                    className="inline-block px-2 py-0.5 rounded text-xs font-bold tracking-wider uppercase mb-2"
-                    style={{ background: "rgba(204,0,0,0.85)", color: "white" }}
-                  >
-                    {video.category}
-                  </span>
-                  <h3 className="text-white font-bold text-sm leading-tight">
-                    {video.title}
-                  </h3>
-                  <p className="text-white/55 text-xs mt-1 leading-snug">
-                    {video.desc}
-                  </p>
-                </div>
+              {/* Duration */}
+              <div
+                className="absolute top-4 right-4 px-2.5 py-1 rounded-lg text-xs font-bold"
+                style={{ background: "rgba(0,0,0,0.75)", color: "white", backdropFilter: "blur(4px)" }}
+              >
+                {mainVideo.duration}
+              </div>
 
-                {/* Hover glow border */}
-                <div
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
+              {/* Info */}
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <span
+                  className="inline-block px-2.5 py-0.5 rounded-md text-xs font-bold tracking-wider uppercase mb-3"
+                  style={{ background: "#cc0000", color: "white" }}
+                >
+                  {mainVideo.category}
+                </span>
+                <h3
+                  className="text-white font-black leading-tight mb-2"
+                  style={{ fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)", letterSpacing: "-0.02em" }}
+                >
+                  {mainVideo.title}
+                </h3>
+                <p className="text-white/60 text-sm leading-snug">{mainVideo.desc}</p>
+              </div>
+            </button>
+
+            {/* Sidebar: small cards */}
+            <div className="flex flex-col gap-4">
+              {/* "En la lista" label */}
+              <div className="flex items-center gap-2 px-1">
+                <div style={{ width: "3px", height: "16px", background: "#cc0000", borderRadius: "2px" }} />
+                <span
                   style={{
-                    boxShadow:
-                      hoveredCard === i
-                        ? "inset 0 0 0 2px rgba(204,0,0,0.7)"
-                        : "inset 0 0 0 2px transparent",
-                    transition: "box-shadow 0.3s ease",
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "#999",
                   }}
-                />
-              </button>
-            ))}
-          </div>
+                >
+                  A continuación
+                </span>
+              </div>
 
+              {sideVideos.map((video, i) => {
+                const originalIndex = VIDEOS.indexOf(video);
+                return (
+                  <button
+                    key={video.id}
+                    onClick={() => setFeatured(originalIndex)}
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                    className="flex gap-3 text-left rounded-xl overflow-hidden group"
+                    style={{
+                      background: hovered === i ? "#f9f9f9" : "transparent",
+                      border: "1.5px solid",
+                      borderColor: hovered === i ? "#f0f0f0" : "transparent",
+                      padding: "10px",
+                      transition: "background 0.2s ease, border-color 0.2s ease",
+                    }}
+                  >
+                    {/* Thumbnail */}
+                    <div
+                      className="relative rounded-lg overflow-hidden flex-shrink-0"
+                      style={{ width: "120px", height: "68px" }}
+                    >
+                      <img
+                        src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                        style={{
+                          transform: hovered === i ? "scale(1.06)" : "scale(1)",
+                          transition: "transform 0.3s ease",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 flex items-center justify-center"
+                        style={{
+                          background: hovered === i ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0.2)",
+                          transition: "background 0.2s ease",
+                        }}
+                      >
+                        <div
+                          className="w-8 h-8 rounded-full flex items-center justify-center"
+                          style={{
+                            background: hovered === i ? "#cc0000" : "rgba(255,255,255,0.85)",
+                            transition: "background 0.2s ease",
+                          }}
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill={hovered === i ? "white" : "#111"} style={{ marginLeft: "2px" }}>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      {/* Duration */}
+                      <div
+                        className="absolute bottom-1 right-1 px-1 rounded text-white"
+                        style={{ fontSize: "0.6rem", fontWeight: 700, background: "rgba(0,0,0,0.75)" }}
+                      >
+                        {video.duration}
+                      </div>
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex flex-col justify-center min-w-0">
+                      <span
+                        className="inline-block px-1.5 py-0.5 rounded text-white mb-1"
+                        style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", background: "#cc0000", width: "fit-content" }}
+                      >
+                        {video.category}
+                      </span>
+                      <p
+                        className="font-bold text-gray-900 leading-tight"
+                        style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}
+                      >
+                        {video.title}
+                      </p>
+                      <p
+                        className="text-gray-400 mt-0.5 leading-snug line-clamp-2"
+                        style={{ fontSize: "0.7rem" }}
+                      >
+                        {video.desc}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Video Modal */}
+      {/* Modal */}
       {activeVideo && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{
-            background: "rgba(0,0,0,0.93)",
-            backdropFilter: "blur(14px)",
-          }}
+          style={{ background: "rgba(0,0,0,0.93)", backdropFilter: "blur(16px)" }}
           onClick={() => setActiveVideo(null)}
         >
           <div
@@ -202,28 +276,13 @@ export default function Videos() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute -top-11 right-0 flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors"
-              style={{
-                color: "rgba(255,255,255,0.7)",
-                border: "1px solid rgba(255,255,255,0.2)",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLButtonElement).style.color = "white")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLButtonElement).style.color =
-                  "rgba(255,255,255,0.7)")
-              }
+              className="absolute -top-11 right-0 flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium"
+              style={{ color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.2)" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "white")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.7)")}
               onClick={() => setActiveVideo(null)}
             >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
