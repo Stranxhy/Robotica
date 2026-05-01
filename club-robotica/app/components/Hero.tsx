@@ -219,7 +219,7 @@ export default function Hero() {
 
       {/* ── Main content ── */}
       <div
-        className="relative z-20 w-full max-w-6xl mx-auto px-8 md:px-16 flex items-center"
+        className="relative z-20 w-full max-w-6xl mx-auto px-6 md:px-16 flex items-center justify-center md:justify-start"
         style={{
           opacity: isLoaded ? 1 : 0,
           transform: `translate(${dx * -8}px, ${dy * -8}px)`,
@@ -233,7 +233,7 @@ export default function Hero() {
             color: "#fff",
             lineHeight: 0.92,
             letterSpacing: "-0.045em",
-            textAlign: "left",
+            textAlign: "left" as const,
           }}
         >
           {[

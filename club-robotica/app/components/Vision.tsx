@@ -10,12 +10,11 @@ const PANELS = [
     word: "VISIÓN",
     heading: "Nuestra\nVisión",
     subheading: "A dónde vamos",
-    text: "Ser el club de robótica referente de México, formando ingenieros e innovadores capaces de diseñar tecnología que resuelva los grandes retos de la humanidad.",
+    text: "Ser el espacio universitario líder en robótica e ingeniería aplicada, donde estudiantes de distintas carreras colaboran para desarrollar proyectos tecnológicos con impacto real en su entorno.",
     bullets: [
-      "Competencias internacionales de robótica",
-      "Investigación de impacto global publicada",
-      "Alumni en las mejores empresas de tecnología",
-      "Laboratorio equipado de última generación",
+      "Participar en competencias nacionales de robótica",
+      "Desarrollar prototipos que resuelvan problemas reales",
+      "Fortalecer la formación técnica complementaria"
     ],
   },
   {
@@ -25,12 +24,12 @@ const PANELS = [
     word: "MISIÓN",
     heading: "Nuestra\nMisión",
     subheading: "Por qué existimos",
-    text: "Crear un espacio interdisciplinario donde estudiantes de todas las carreras aprendan robótica, programación e inteligencia artificial mediante proyectos reales.",
+    text: "Fomentar el aprendizaje práctico de robótica, electrónica y programación entre la comunidad, creando un ambiente colaborativo donde cualquier estudiante —sin importar su carrera— pueda diseñar, construir e innovar.",
     bullets: [
-      "Talleres semanales de electrónica y software",
-      "Proyectos reales con impacto en el campus",
-      "Mentorías de ingenieros en la industria",
-      "Comunidad activa de más de 50 miembros",
+      "Reuniones semanales de trabajo y aprendizaje",
+      "Proyectos colaborativos entre distintas carreras",
+      "Acceso a materiales, sensores y herramientas del club",
+      "Comunidad abierta para toda la universidad",
     ],
   },
 ];
@@ -128,9 +127,8 @@ export default function Vision() {
 
         {/* ── Content area ───────────────────────────────── */}
         <div
+          className="grid grid-cols-1 md:grid-cols-2"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
             gap: "clamp(2rem, 5vw, 5rem)",
             alignItems: "start",
             opacity: fading ? 0 : (visible ? 1 : 0),

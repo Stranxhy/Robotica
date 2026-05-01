@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 
 const stats = [
-  { value: 50, suffix: "+", label: "Miembros\nActivos" },
-  { value: 20, suffix: "+", label: "Proyectos\nCompletados" },
-  { value: 10, suffix: "+", label: "Competencias\nGanadas" },
-  { value: 5,  suffix: "",  label: "Años de\nInnovación" },
+  { value: 13, suffix: "",  label: "Miembros\nActivos" },
+  { value: 10, suffix: "+", label: "Proyectos\nCompletados" },
+  { value: 2,  suffix: "",  label: "Competencias\nGanadas" },
+  { value: 2,  suffix: "",  label: "Años de\nInnovación" },
 ];
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
@@ -57,13 +57,7 @@ export default function Stats() {
   return (
     <section style={{ backgroundColor: "#cc0000" }} className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-          }}
-          className="grid-cols-2 md:grid-cols-4"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 stats-grid">
           {stats.map((s, i) => (
             <div
               key={s.label}
@@ -75,8 +69,7 @@ export default function Stats() {
                 alignItems: "center",
                 textAlign: "center",
                 padding: "2rem 1rem",
-                borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.18)" : "none",
-                transform: hovered === i ? "translateY(-4px)" : "translateY(0)",
+                  transform: hovered === i ? "translateY(-4px)" : "translateY(0)",
                 transition: "transform 0.3s ease",
                 cursor: "default",
               }}

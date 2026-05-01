@@ -69,13 +69,16 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="py-24 px-6 bg-white">
+    <section id="contacto" className="py-16 md:py-24 px-4 md:px-6 bg-white">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
         <div className="text-center mb-14">
           <p className="section-label">Únete</p>
-          <h2 className="section-title mb-4">Contáctanos</h2>
+          <h2 className="section-title mb-4">
+            <span className="shimmer-dark">Contác</span>
+            <span className="shimmer-red">tanos</span>
+          </h2>
           <p className="section-subtitle">
             ¿Quieres unirte al club o tienes preguntas? Escríbenos y nos ponemos en contacto contigo.
           </p>

@@ -75,7 +75,7 @@ export default function About() {
         {/* ── Header ──────────────────────────────────── */}
         <div
           ref={headerRef}
-          className="mb-20 grid md:grid-cols-2 gap-16 items-center"
+          className="mb-10 md:mb-20 grid md:grid-cols-2 gap-8 md:gap-16 items-center"
           style={{
             opacity: headerVisible ? 1 : 0,
             transform: headerVisible ? "translateY(0)" : "translateY(32px)",
@@ -90,12 +90,12 @@ export default function About() {
                 fontWeight: 900,
                 letterSpacing: "-0.04em",
                 lineHeight: 1.05,
-                color: "#111",
                 marginBottom: "0.75rem",
                 display: "block",
               }}
             >
-              Sobre el Club
+              <span className="shimmer-dark">Sobre el </span>
+              <span className="shimmer-red">Club</span>
             </h2>
             {/* Red accent line */}
             <div
@@ -127,8 +127,8 @@ export default function About() {
           </div>
 
           <div
-            className="relative rounded-2xl overflow-hidden"
-            style={{ height: "340px", boxShadow: "0 24px 64px rgba(0,0,0,0.12)" }}
+            className="relative rounded-2xl overflow-hidden h-56 md:h-[340px]"
+            style={{ boxShadow: "0 24px 64px rgba(0,0,0,0.12)" }}
           >
             <img
               src="/img/ClubRobotica.jpeg"
@@ -169,9 +169,8 @@ export default function About() {
         >
           {/* Tab buttons */}
           <div
+            className="grid grid-cols-2 md:grid-cols-4"
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
               borderBottom: "2px solid #f0f0f0",
               marginBottom: "2.5rem",
             }}

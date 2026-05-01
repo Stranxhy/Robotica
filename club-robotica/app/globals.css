@@ -151,6 +151,41 @@ body {
 }
 .form-input::placeholder { color: #aaa; }
 
+/* ── Stats responsive grid borders ─────────────────── */
+.stats-grid > div {
+  border-right: 1px solid rgba(255,255,255,0.18);
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+.stats-grid > div:nth-child(2n) { border-right: none; }
+.stats-grid > div:nth-last-child(-n+2) { border-bottom: none; }
+@media (min-width: 768px) {
+  .stats-grid > div { border-bottom: none; border-right: 1px solid rgba(255,255,255,0.18); }
+  .stats-grid > div:last-child { border-right: none; }
+}
+
+/* ── Text shimmer ───────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-dark {
+  background: linear-gradient(90deg, #111 35%, #888 50%, #111 65%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3.5s linear infinite;
+}
+.shimmer-red {
+  background: linear-gradient(90deg, #cc0000 35%, #ff7777 50%, #cc0000 65%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3.5s linear infinite;
+  animation-delay: 0.4s;
+}
+
 /* ── Button pulse on hover ──────────────────────────── */
 .btn-red {
   display: inline-flex;

@@ -65,7 +65,10 @@ export default function Videos() {
           {/* Header */}
           <div className="mb-12">
             <p className="section-label">Contenido</p>
-            <h2 className="section-title">Robótica en Acción</h2>
+            <h2 className="section-title">
+              <span className="shimmer-dark">Robótica </span>
+              <span className="shimmer-red">en Acción</span>
+            </h2>
           </div>
 
           {/* Layout: featured + sidebar */}

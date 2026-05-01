@@ -74,7 +74,10 @@ export default function Events() {
         {/* Header */}
         <div className="text-center mb-14">
           <p className="section-label">Agenda</p>
-          <h2 className="section-title mb-4">Próximos Eventos</h2>
+          <h2 className="section-title mb-4">
+            <span className="shimmer-dark">Próximos </span>
+            <span className="shimmer-red">Eventos</span>
+          </h2>
           <p className="section-subtitle">
             Talleres, competencias y simposios para aprender, competir y conectar
             con la comunidad tecnológica.
@@ -88,14 +91,12 @@ export default function Events() {
               key={ev.title}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
+              className="flex flex-col sm:flex-row items-start sm:items-center"
               style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "1.25rem",
-                alignItems: "center",
+                gap: "1rem",
                 background: "#fff",
                 borderRadius: "1rem",
-                padding: "1.5rem",
+                padding: "1.25rem",
                 border: hovered === i ? "1.5px solid #cc0000" : "1.5px solid #f0f0f0",
                 boxShadow: hovered === i
                   ? "0 12px 40px rgba(204,0,0,0.1)"
@@ -156,10 +157,10 @@ export default function Events() {
               </div>
 
               {/* CTA */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 w-full sm:w-auto">
                 <a
                   href="#contacto"
-                  className="btn-red text-xs px-5 py-2.5"
+                  className="btn-red w-full sm:w-auto justify-center"
                   style={{ fontSize: "0.75rem", padding: "0.55rem 1.25rem" }}
                 >
                   Registrarse

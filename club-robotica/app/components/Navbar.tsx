@@ -29,10 +29,10 @@ export default function Navbar() {
         scrolled ? "shadow-xl py-1" : "py-2"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-24">
+      <nav className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16 md:h-24">
         {/* Logo Section */}
         <a href="#inicio" className="flex items-center gap-4 group">
-          <div className="w-20 h-20 flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 md:w-20 md:h-20 flex items-center justify-center flex-shrink-0">
             <img
               src="/img/logo_blanco.png"
               alt="Logo Club de Robótica"
@@ -40,10 +40,10 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-white font-bold text-xl md:text-2xl leading-tight uppercase tracking-tight">
+            <p className="text-white font-bold text-sm md:text-2xl leading-tight uppercase tracking-tight">
               Club de Robótica
             </p>
-            <p className="text-red-100 text-sm md:text-base leading-tight opacity-90">
+            <p className="text-red-100 text-xs md:text-base leading-tight opacity-90">
               Universidad Iberoamericana
             </p>
           </div>

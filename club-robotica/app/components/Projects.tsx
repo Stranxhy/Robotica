@@ -68,12 +68,27 @@ export default function Projects() {
     <section id="proyectos" className="py-24 px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <p className="section-label">Nuestro trabajo</p>
-          <h2 className="section-title mb-4">Proyectos Destacados</h2>
-          <p className="section-subtitle">
-            Desde robots autónomos hasta dispositivos biomédicos — exploramos el
-            límite de lo posible.
+        <div className="mb-12 flex flex-col items-center text-center">
+          <div className="flex items-center gap-3 mb-5">
+            <div style={{ width: "32px", height: "3px", background: "#cc0000", borderRadius: "2px" }} />
+            <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#cc0000" }}>
+              Lo que construimos
+            </span>
+            <div style={{ width: "32px", height: "3px", background: "#cc0000", borderRadius: "2px" }} />
+          </div>
+          <h2
+            style={{
+              fontSize: "clamp(2.8rem, 6vw, 5rem)",
+              fontWeight: 900,
+              letterSpacing: "-0.04em",
+              lineHeight: 1.05,
+            }}
+          >
+            <span className="shimmer-dark">Nuestros </span>
+            <span className="shimmer-red">Proyectos</span>
+          </h2>
+          <p style={{ fontSize: "1rem", color: "#999", maxWidth: "400px", lineHeight: 1.75, marginTop: "1.25rem" }}>
+            Ideas que se vuelven realidad. Cada proyecto refleja lo que el club es capaz de hacer.
           </p>
         </div>
 
